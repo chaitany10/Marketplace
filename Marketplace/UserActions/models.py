@@ -30,7 +30,7 @@ class Item(models.Model):
 
 
 class Cart(models.Model):
-    cart_id = models.ForeignKey(User,related_name='cart_id',on_delete=models.CASCADE)
+    cart_id = models.ForeignKey(User,on_delete=models.CASCADE)
     total_amount = models.FloatField()
     item = models.ForeignKey(Item,on_delete=models.CASCADE)
     class Meta:

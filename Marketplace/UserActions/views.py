@@ -8,7 +8,7 @@ from django.contrib import auth, messages
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from .models import UserAttribute,Item
+from .models import UserAttribute,Item,Cart
 from datetime import datetime, timedelta, timezone
 from itertools import chain
 from django.db.models import Q
@@ -169,20 +169,45 @@ def single_item_view(request, item_id):
     # Check for Authentication
     if not request.user.is_authenticated:
 
-        return redirect('userActions:login')
+        return redirect('UserActions:login')
 
     else:
-        
-        
+        available = False
+        cart = Cart().objects.get(cart_id = request.username,item_id = item_id).exists()
+        if(cart != None):
+            available = False
+        else:
+            available = True
         item = Item.objects.get(item_id=item_id)  # Get specified Object
-        context={'item' : item}
+        context={
+            'item' : item,
+            'cart' : available
+        }
         return render(request, 'single_item.html', context)
 
 def cart(request):
     return
 
 def addToCart(request,item_id):
-    return
+    cart = Cart.objects.filter(cart_id = request.user).last()
+    if cart == None:
+        item = Item.objects.get(item_id = item_id)
+        cart = Cart()
+        cart.cart_id = request.user
+        cart.item = item
+        cart.total_amount = 0
+        cart.save()
+        cart = False
+    else:
+        last_cart = cart
+        item = Item.objects.get(item_id = item_id)
+        cart.cart_id = request.user
+        cart.item = item
+        cart.total_amount = last_cart.total_amount + item.item_price
+        cart.save()
+        cart = False
+        
+    return HttpResponseRedirect('UserActions:single_item_view/')
 # # View for checking the items that the user has bidded on and is currently the hhighest bidder
 # # Requests: GET
 
