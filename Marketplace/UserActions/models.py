@@ -11,9 +11,14 @@ STATUS =[
 ]
 
 # Create your models here.
-
+class Slottings(models.Model):
+    slot_id =models.AutoField(primary_key=True)
+    start_time = models.DateTimeField()
+    usage_count = models.IntegerField()
+     
 class Pincodes(models.Model):
     pincode = models.IntegerField()
+    
 
 #Item Model
 class Item(models.Model):

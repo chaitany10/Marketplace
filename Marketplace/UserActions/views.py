@@ -78,7 +78,7 @@ def login_view(request):
 @login_required
 def logout_view(request):
     auth.logout(request)
-    return HttpResponseRedirect('home')
+    return HttpResponseRedirect(reverse('home'))
 
 
 
@@ -126,7 +126,7 @@ def profile_view(request):
 def item_list_view(request):
     # Check for Authentication
     if not request.user.is_authenticated:
-        return redirect('userActions:login')
+        return redirect('UserActions:login')
     else:
         # Getting all Items
         itemsList = Item.objects.all()
@@ -173,12 +173,15 @@ def single_item_view(request, item_id):
 
     else:
         available = False
-        cart = Cart().objects.get(cart_id = request.username,item_id = item_id).exists()
-        if(cart != None):
+        cart = Cart.objects.filter(cart_id = request.user,item_id = item_id).exists()
+        print(cart)
+        if(cart != False):
             available = False
+            print(available)
         else:
             available = True
         item = Item.objects.get(item_id=item_id)  # Get specified Object
+        
         context={
             'item' : item,
             'cart' : available
@@ -186,28 +189,45 @@ def single_item_view(request, item_id):
         return render(request, 'single_item.html', context)
 
 def cart(request):
-    return
+    if not request.user.is_authenticated:
+        return redirect('UserActions:login')
+    else:
+        cart_items = Cart.objects.filter(cart_id = request.user)
+        total_amount = Cart.objects.filter(cart_id = request.user).last().total_amount
+        for item in cart_items:
+            print(item.item.item_name)
+        context={
+            'list' : cart_items,
+            'total_amount' : total_amount
+        }
+        return render(request, 'cart.html', context)
+
 
 def addToCart(request,item_id):
-    cart = Cart.objects.filter(cart_id = request.user).last()
-    if cart == None:
-        item = Item.objects.get(item_id = item_id)
-        cart = Cart()
-        cart.cart_id = request.user
-        cart.item = item
-        cart.total_amount = 0
-        cart.save()
-        cart = False
+    if not request.user.is_authenticated:
+        return redirect('UserActions:login')
     else:
-        last_cart = cart
-        item = Item.objects.get(item_id = item_id)
-        cart.cart_id = request.user
-        cart.item = item
-        cart.total_amount = last_cart.total_amount + item.item_price
-        cart.save()
-        cart = False
-        
-    return HttpResponseRedirect('UserActions:single_item_view/')
+        cart = Cart.objects.filter(cart_id = request.user).exists()
+
+        if cart == False:
+            item = Item.objects.get(item_id = item_id)
+            cart = Cart()
+            cart.cart_id = request.user
+            cart.item = item
+            cart.total_amount = item.item_price
+            cart.save()
+            cart = False
+        else:
+            last_cart = Cart.objects.filter(cart_id = request.user).last()
+            cart=Cart()
+            item = Item.objects.get(item_id = item_id)
+            cart.cart_id = request.user
+            cart.item = item
+            cart.total_amount = last_cart.total_amount + item.item_price
+            cart.save()
+            cart = False
+            
+        return HttpResponseRedirect('/item/'+str(item.item_id))
 # # View for checking the items that the user has bidded on and is currently the hhighest bidder
 # # Requests: GET
 

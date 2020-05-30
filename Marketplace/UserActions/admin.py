@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UserAttribute,Item,Pincodes
+from .models import UserAttribute,Item,Pincodes,Cart,Slottings
 # Register your models here.
 
 @admin.register(UserAttribute)
@@ -15,3 +15,10 @@ class Itemadmin(admin.ModelAdmin):
 class Pincodeadmin(admin.ModelAdmin):
     list_display =  ['pincode']
 
+@admin.register(Cart)
+class CartAdmin(admin.ModelAdmin):
+    list_display =('cart_id','item','total_amount')
+
+@admin.register(Slottings)
+class SlottingsAdmin(admin.ModelAdmin):
+    list_display = ('slot_id','usage_count','start_time')
