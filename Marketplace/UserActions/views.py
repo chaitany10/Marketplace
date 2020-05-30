@@ -131,10 +131,11 @@ def item_list_view(request):
         # Getting all Items
         itemsList = Item.objects.all()
         # Filtering out item that are uploaded by the current user
-        
+        categories = list(set([item.category for item in itemsList]))
         
         context = {
-            'itemList': itemsList
+            'itemList': itemsList,
+            'categories': categories
         }
 
         return render(request, 'item_list.html', context)
