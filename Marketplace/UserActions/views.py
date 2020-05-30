@@ -139,72 +139,47 @@ def item_list_view(request):
 
         return render(request, 'item_list.html', context)
 
+def search(request):
+    if request.method == 'GET':
+        query = request.GET.get('search')
+
+        if query is not None:
+            context = {}
+            results = Item.objects.filter(item_name__contains=query)
+            # Filtering out item that are uploaded by the current user
+            
+            context['results'] = results
+            context['search'] = True
+            if len(results) == 0:
+                context['empty'] = True
+            return render(request, 'item_list.html', context)
+
+        else:
+            return render(request, 'item_list.html')
+
+    else:
+        return render(request, 'item_list.html')
+
+
 # # A detailed view for Single Item
 # # Requests: GET for gettting the item and POST for getting new bid
 
 
-# def single_item_view(request, item_id):
-#     # Check for Authentication
-#     if not request.user.is_authenticated:
+def single_item_view(request, item_id):
+    # Check for Authentication
+    if not request.user.is_authenticated:
 
-#         return redirect('userActions:login')
+        return redirect('userActions:login')
 
-#     else:
-#         context = {}
-#         context['claimed_item'] = False
-#         item = Item.objects.get(item_id=item_id)  # Get specified Object
-#         if item is None:
-#             return redirect('userActions:profile')
-#         context['item'] = item
-#         can_bid = False  # Whether the Item is Still available for bidding or not
-#         # Checking whether the current time has crossed Deadline Date
-#         if(time_difference(item.deadline_date) > 0):
-#             can_bid = True
-#         else:
-#             can_bid = False
-#         context['can_bid'] = can_bid
+    else:
+        
+        
+        item = Item.objects.get(item_id=item_id)  # Get specified Object
+        context={'item' : item}
+        return render(request, 'single_item.html', context)
 
-#         # Getting new Bid from User
-#         if request.method == 'POST':
-#             form = BidForm(request.POST)
-
-#             if form.is_valid():
-#                 success = False
-#                 new_bid = form.cleaned_data.get('new_bid')
-
-#                 # Checking whether the new bid is greater than the current highest bid
-#                 if(new_bid > item.highest_bid):
-#                     item.highest_bid = new_bid
-#                     item.highest_bid_user = request.user
-#                     item.save()  # Saving the object after updating highest bid
-
-#                     # Saving details to bid object if the bid by user for that item already exists
-#                     if Bid.objects.filter(username=request.user, item=item).exists():
-#                         bid = Bid.objects.get(username=request.user, item=item)
-#                         bid.bid_amount = new_bid
-#                         bid.save()
-
-#                     # Creating new bid if user is bidding for the first time for the selected item
-#                     else:
-#                         bid = Bid()
-#                         bid.username = request.user
-#                         bid.item = item
-#                         bid.bid_amount = new_bid
-#                         bid.save()
-
-#                     context['success'] = True
-#                     messages.success(request, 'Bid Successfull')
-
-#                 else:
-#                     messages.error(
-#                         request, 'New Bid cant be less than current Highest Bid')
-#                     context['success'] = False
-#         else:
-#             form = BidForm()
-#         context['available'] = True
-#         context['form'] = form
-#         return render(request, 'single_item.html', context)
-
+def cart(request):
+    
 # # View for checking the items that the user has bidded on and is currently the hhighest bidder
 # # Requests: GET
 

@@ -2,8 +2,8 @@
 {% load static%}
 {% block search%}
 <li class="d-none d-xl-block">
-<div class="form-box f-right ">
-    <form action="{% url 'userActions:search' %}" method="GET" value="{{request.GET.search}}">
+ <div class="form-box f-right ">
+    <form action="{% url 'UserActions:search' %}" method="GET" value="{{request.GET.search}}">
     <input type="text" name="search" placeholder="Search" value="{{request.GET.search}}">
         <div class="search-icon">
             <i class="fas fa-search special-tag"></i>
@@ -29,7 +29,7 @@
                         {% else%}
                         <h2>Item list</h2>
                         {% endif %}
-                            
+                          
                         </div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                     <div class="product_sidebar">
                         <div class="single_sedebar">
                             
-                                <form action="{% url 'userActions:search' %}" method="GET" value="{{request.GET.search}}">
+                                <form action="{% url 'UserActions:search' %}" method="GET" value="{{request.GET.search}}">
                                     <input type="text" name="search" placeholder="Search" value="{{request.GET.search}}">
                                         <div class="search-icon">
                                             <i class="ti-search"></i>
@@ -86,9 +86,9 @@
                             {% for item in results %}
                             <div class="col-lg-6 col-sm-6">
                                     <div class="single_product_item">
-                                        <a href = "{%url 'userActions:singleItem' item_id=item.item_id%}">
+                                        <a href = "{%url 'UserActions:singleItem' item_id=item.item_id%}">
                                         <img src="{{item.image_url.url}}" alt="{{item.item_name}}" class="img-fluid"></a>
-                                        <h3> <a href="{% url 'userActions:singleItem' item_id=item.item_id%}">{{item.item_name}}</a> </h3>
+                                        <h3> <a href="{% url 'UserActions:singleItem' item_id=item.item_id%}">{{item.item_name}}</a> </h3>
                                         <p>Highest Bid : {{item.highest_bid}}</p>
                                     </div>
                                 </div>
@@ -97,9 +97,9 @@
                             {% for item in itemList %}
                                 <div class="col-lg-6 col-sm-6">
                                     <div class="single_product_item">
-                                        <a href = "{%url 'userActions:singleItem' item_id=item.item_id%}">
+                                        <a href = "{%url 'UserActions:singleItem' item_id=item.item_id%}">
                                         <img src="{{item.image_url.url}}" alt="{{item.item_name}}" class="img-fluid"></a>
-                                        <h3> <a href="{% url 'userActions:singleItem' item_id=item.item_id%}">{{item.item_name}}</a> </h3>
+                                        <h3> <a href="{% url 'UserActions:singleItem' item_id=item.item_id%}">{{item.item_name}}</a> </h3>
                                         <p>Highest Bid : {{item.highest_bid}}</p>
                                     </div>
                                 </div>
