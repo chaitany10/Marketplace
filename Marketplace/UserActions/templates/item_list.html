@@ -59,10 +59,12 @@
                             <div class="select_option">
                                 <div class="select_option_list">Category <i class="right fas fa-caret-down"></i> </div>
                                 <div class="select_option_dropdown">
-                                    <p><a href="#">Category 1</a></p>
-                                    <p><a href="#">Category 2</a></p>
-                                    <p><a href="#">Category 3</a></p>
-                                    <p><a href="#">Category 4</a></p>
+                                    <p><a href="#">Fruits</a></p>
+                                    <p><a href="#">Vegetables</a></p>
+                                    <p><a href="#">Bakery</a></p>
+                                    <p><a href="#">Snacks</a></p>
+                                    <p><a href="#">Kitchen</a></p>
+                                    <p><a href="#">Beverages</a></p>
                                 </div>
                             </div>
                         </div>
@@ -89,7 +91,7 @@
                                         <a href = "{%url 'UserActions:singleItem' item_id=item.item_id%}">
                                         <img src="{{item.image_url.url}}" alt="{{item.item_name}}" class="img-fluid"></a>
                                         <h3> <a href="{% url 'UserActions:singleItem' item_id=item.item_id%}">{{item.item_name}}</a> </h3>
-                                        <p>Highest Bid : {{item.highest_bid}}</p>
+                                        <p>Price : {{item.item_price}}</p>
                                     </div>
                                 </div>
                             {% endfor %}
@@ -100,7 +102,7 @@
                                         <a href = "{%url 'UserActions:singleItem' item_id=item.item_id%}">
                                         <img src="{{item.image_url.url}}" alt="{{item.item_name}}" class="img-fluid"></a>
                                         <h3> <a href="{% url 'UserActions:singleItem' item_id=item.item_id%}">{{item.item_name}}</a> </h3>
-                                        <p>Highest Bid : {{item.highest_bid}}</p>
+                                        <p>Price : {{item.item_price}}</p>
                                     </div>
                                 </div>
                             {% endfor %}
