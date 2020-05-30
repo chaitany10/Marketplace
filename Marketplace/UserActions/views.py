@@ -8,7 +8,7 @@ from django.contrib import auth, messages
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from .models import UserAttribute,Item,Cart
+from .models import UserAttribute,Item,Cart,Slottings
 from datetime import datetime, timedelta, timezone
 from itertools import chain
 from django.db.models import Q
@@ -95,27 +95,27 @@ def profile_view(request):
         return render(request, 'profile.html',context)
 
 
-# def history_view(request):
-#     # Check for Authentication
-#     if not request.user.is_authenticated:
-#         return redirect('userActions:login')
-#     else:
-#         # Get all the items that have been uploaded by the user
-#         user_history_active_items = Item.objects.filter(username=request.user)
-#         user_history_claimed_items = ClaimedItems.objects.filter(
-#             upload_user=request.user)
-#         context = {}
-#         # Appending both list by using itertools library(implemented in C)
+def history_view(request):
+    # Check for Authentication
+    if not request.user.is_authenticated:
+        return redirect('userActions:login')
+    else:
+        # Get all the items that have been uploaded by the user
+        orders = Item.objects.filter(username=request.user)
+        user_history_claimed_items = ClaimedItems.objects.filter(
+            upload_user=request.user)
+        context = {}
+        # Appending both list by using itertools library(implemented in C)
         
-#         if len(user_history_active_items) == 0 and len(user_history_claimed_items) == 0:
-#             context['empty'] = True
+        if len(user_history_active_items) == 0 and len(user_history_claimed_items) == 0:
+            context['empty'] = True
 
         
 
-#         context['user_history_claimed_items'] =  user_history_claimed_items
-#         context['user_history_active_items'] = user_history_active_items
+        context['user_history_claimed_items'] =  user_history_claimed_items
+        context['user_history_active_items'] = user_history_active_items
         
-#         return render(request, 'history.html', context)
+        return render(request, 'history.html', context)
 
 
 
@@ -194,8 +194,7 @@ def cart(request):
     else:
         cart_items = Cart.objects.filter(cart_id = request.user)
         total_amount = Cart.objects.filter(cart_id = request.user).last().total_amount
-        for item in cart_items:
-            print(item.item.item_name)
+        
         context={
             'list' : cart_items,
             'total_amount' : total_amount
@@ -240,7 +239,31 @@ def checked_out(request):
     if not request.user.is_authenticated:
         return redirect('UserActions:login')
     else:
-        context = {}
+        
         cart_items = Cart.objects.filter(cart_id = request.user)
         total_amount = Cart.objects.filter(cart_id = request.user).last().total_amount
-        order = 
+        user = UserAttribute.objects.get(user = request.user)
+        
+        
+        slots = Slottings.objects.all()
+
+        if(total_amount>user.money):
+             messages.error(request, 'Insufficient balance')
+        else:
+            user.money -= total_amount
+            user.save()
+        context = {
+            'user' : user,
+            'itemList':cart_items,
+            'total_amount' : total_amount,
+            'slots':slots,
+            
+        }
+        return render(request,'checkout.html',context)
+        
+
+def time_difference(deadline_date):
+    current_time = datetime.now(timezone.utc)  # Getting current time UTC
+    difference_time = deadline_date - current_time
+    #  Using total_seconds() function to calulate time difference in seconds, subtracting 19800(5 hours 30 minutes for time correction)
+    return (difference_time.total_seconds() - 19800)

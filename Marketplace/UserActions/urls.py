@@ -17,6 +17,6 @@ urlpatterns =[
      path('search/',views.search, name='search'),
      path('item/<int:item_id>',views.single_item_view, name = 'singleItem'),
      path('addtocart/<int:item_id>',views.addToCart, name = 'addToCart'),
-     path('cart/',views.cart, name = 'cart')
-     # path('search/',views.search, name='search'),
+     path('cart/',views.cart, name = 'cart'),
+     path('checkout/',views.checked_out,name = 'checkout'),
 ]

@@ -91,27 +91,18 @@
                         <input type="radio" aria-label="Radio button for following text input">
                       </li>
                     </ul>
-                    <h6>
-                      Calculate Shipping
-                      <i class="fa fa-caret-down" aria-hidden="true"></i>
-                    </h6>
                     
                     
-                     <select class="shipping_select section_bg">
-                     {% for list in pincodes %}
-                      <option value="1">list.pincode</option>
-                      <option value="2">list.pincode</option>
-                      <option value="3">list.pincode</option>
-                    {% endfor %}
-                    <a class="btn_1" href="#">Update Details</a>
+                    
+                     
                   </div>
                 </td>
               </tr>
             </tbody>
           </table>
           <div class="checkout_btn_inner float-right">
-            <a class="btn_1" href="#">Continue Shopping</a>
-            <a class="btn_1 checkout_btn_1" href="#">Proceed to checkout</a>
+            <a class="btn_1" href="{% url 'UserActions:itemList'%}">Continue Shopping</a>
+            <a class="btn_1" href="{% url 'UserActions:checkout' %}">Proceed to checkout</a>
           </div>
         </div>
       </div>
