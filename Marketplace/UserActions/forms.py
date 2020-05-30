@@ -50,3 +50,6 @@ class LoginForm(forms.Form):
         else:
             self.cleaned_data['user'] = user
         return self.cleaned_data
+
+class SlottingForm(forms.Form):
+    slots = forms.CharField(label='Select Slot', widget=forms.Select())

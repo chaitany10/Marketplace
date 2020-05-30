@@ -236,18 +236,11 @@ def addToCart(request,item_id):
 # # Requests: GET and POST for saving new info
 
 
-# def checked_out(request, item_id):
-#     if not request.user.is_authenticated:
-#         return redirect('userActions:login')
-#     else:
-#         context = {}
-#         item = Item.objects.get(item_id=item_id)
-#         if(time_difference(item.deadline_date) < 0):  # Check whether deadline has crossed
-#             context['item'] = item
-#             save_to_claimed_item(item)
-#             item.delete()
-#             context['item'] = item
-#             context['claimed_item'] = True
-#             return render(request, 'single_item.html', context)
-#         else:
-#             return redirect('userActions:profile')
+def checked_out(request):
+    if not request.user.is_authenticated:
+        return redirect('UserActions:login')
+    else:
+        context = {}
+        cart_items = Cart.objects.filter(cart_id = request.user)
+        total_amount = Cart.objects.filter(cart_id = request.user).last().total_amount
+        order = 
