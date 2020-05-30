@@ -8,7 +8,7 @@ from django.contrib import auth, messages
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from .models import UserAttribute
+from .models import UserAttribute,Item
 from datetime import datetime, timedelta, timezone
 from itertools import chain
 from django.db.models import Q
@@ -123,26 +123,21 @@ def profile_view(request):
 # # Requests: GET
 
 
-# def item_list_view(request):
-#     # Check for Authentication
-#     if not request.user.is_authenticated:
-#         return redirect('userActions:login')
-#     else:
-#         # Getting all Items
-#         itemsList = Item.objects.all()
-#         # Filtering out item that are uploaded by the current user
-#         itemsListExcludingCurrentuser = itemsList.exclude(
-#             username=request.user)
-#         final_items = []
-#         for item in itemsListExcludingCurrentuser:  # Excluding item that have long passed their deadline, a good implementation would be to create a new model for archived_items
-#             if(time_difference(item.deadline_date) > 0):
-#                 final_items.append(item)
+def item_list_view(request):
+    # Check for Authentication
+    if not request.user.is_authenticated:
+        return redirect('userActions:login')
+    else:
+        # Getting all Items
+        itemsList = Item.objects.all()
+        # Filtering out item that are uploaded by the current user
+        
+        
+        context = {
+            'itemList': itemsList
+        }
 
-#         context = {
-#             'itemList': final_items,
-#         }
-
-#         return render(request, 'item_list.html', context)
+        return render(request, 'item_list.html', context)
 
 # # A detailed view for Single Item
 # # Requests: GET for gettting the item and POST for getting new bid

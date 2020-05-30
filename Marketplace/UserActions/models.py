@@ -26,7 +26,7 @@ class Item(models.Model):
     seller_id = models.ForeignKey(User,on_delete=models.CASCADE)
     category = models.CharField(max_length = 100)
     def __str__(self):
-        return "%s %s" % (self.item_name, self.highest_bid)
+        return "%s %s" % (self.item_name, self.seller_id)
 
 
 class Cart(models.Model):
