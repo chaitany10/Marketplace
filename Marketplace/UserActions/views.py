@@ -43,7 +43,7 @@ def register_view(request):
                     userattribute.save()
                     user1 = authenticate(username=username, password=password)
                     login(request, user1)  # Logging In
-                    return redirect('userActions:profile')
+                    return redirect('UserActions:profile')
         else:
             form = RegisterForm()
         return render(request, 'signup.html', {'form': form})
@@ -51,7 +51,7 @@ def register_view(request):
 def login_view(request):
     #  Authentication check. Users currently logged in cannot view this page.
     if request.user.is_authenticated:
-        return redirect('userActions:profile')
+        return redirect('')
 
     #  Standard Login through Forms
     if request.method == "POST":
@@ -73,3 +73,7 @@ def login_view(request):
     context = {}
     context['login_form'] = login_form
     return render(request, 'login.html', context)
+@login_required
+def logout_view(request):
+    auth.logout(request)
+    return HttpResponseRedirect('')

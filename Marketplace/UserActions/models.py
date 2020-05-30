@@ -3,6 +3,12 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django import forms
 
+STATUS =[
+    ('wait','Waiting for Confirmation'),
+    ('confirmed','Confirmed with Seller'),
+    ('shipped','Shipped'),
+    ('out_for_del','Out for delivery')
+]
 
 # Create your models here.
 
@@ -17,13 +23,13 @@ class Item(models.Model):
     item_description = models.CharField(max_length = 250, blank = True)
     image_url = models.FileField(upload_to='documents')
     pincode = models.ForeignKey(Pincodes,on_delete=models.CASCADE)
-
+    seller = models.ForeignKey(User,on_delete=models.CASCADE)
     def __str__(self):
         return "%s %s" % (self.item_name, self.highest_bid)
 
 
 class Cart(models.Model):
-    cart_id = models.AutoField(primary_key=True)
+    cart_id = models.ForeignKey(User,on_delete=models.CASCADE)
     total_amount = models.FloatField()
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     
@@ -33,3 +39,11 @@ class UserAttribute(models.Model):
     address = models.CharField(max_length = 250, blank = True)
     money =  models.FloatField( blank = True)
     # cart = models.ForeignKey(Cart,on_delete=models.CASCADE)
+
+
+class Orders(models.Model):
+    order_id = models.AutoField(primary_key=True)
+    user_id = models.ForeignKey(User,on_delete=models.CASCADE)
+    total_amount = models.FloatField()
+    cust_resp = models.
+    status = 

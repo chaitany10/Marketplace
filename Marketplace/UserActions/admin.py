@@ -3,4 +3,4 @@
 # # Register your models here.
 
 # @admin.register(UserAttribute)
-# class userattributeadmin()
+# class userattributeadmin(admin.ModelAdmin):
