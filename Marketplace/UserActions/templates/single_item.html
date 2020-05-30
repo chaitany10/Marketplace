@@ -9,22 +9,8 @@
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="hero-cap text-center">
-                        {% if can_claim %}
-                          <h2>Claim it Today!</h2>
-                        {% elif item.upload_user == request.user%}
+                        
                           <h2>Item Details</h2>
-                        {% elif claimed_item %}
-                      
-                            <h2>Thank you for Claiming this Product</h2>
-                        
-                        {% elif available %}
-                            <h2>Bid on this amazing product now!</h2>
-                        {% else%}
-                          <h2>You are currently the highest bidder</h2>
-                          <br>
-                          <h2>Wait for deadline to Claim</h2
-                        
-                        {% endif %}
                         
                         
                         
@@ -84,54 +70,22 @@
                 <th>{{item.item_description}}</th>
                 
               </tr><tr>
-                <th colspan="2"><span>Starting Bid</span></th>
-                <th>{{item.starting_bid}}</th>
+                <th colspan="2"><span>Seller</span></th>
+                <th>{{item.seller_id}}</th>
                 
               </tr><tr>
-                <th colspan="2"><span>Highest Bid</span></th>
-                <th>{{item.highest_bid}}</th>
+                <th colspan="2"><span>Category</span></th>
+                <th>{{item.category}}</th>
                 
-              </tr><tr>
-                <th colspan="2"><span>Contact</span></th>
-                <th>{{item.contact}}</th>
-                
-              </tr>
-              <tr>
-                <th colspan="2"><span>Deadline Date</span></th>
-                <th>{{item.deadline_date}}</th>
-              </tr>
-              {% if item.is_claimed %}
-              <tr>
-                <th colspan="2"><span>Claimed By</span></th>
-                <th>{{item.highest_bid_user}}</th>
-              </tr>
-              {% endif %}
+              
               
           </table>
-          {% if can_bid %}
-          <form clasee= "row contact_form" action="" method="post" novalidate="novalidate" name ="bidform">
-            {% csrf_token %}
-            <!-- <div class="col-md-12 form-group p_star"> -->
-              <input type="text" class="form-control" id="new_bid" name="new_bid" value=""
-                  placeholder="New Bid">
-          <!-- </div> -->
-          <br>
-          <br>
-          <div class="login_part_text text-center"></div>
-                                    
-            <button type="submit" value="submit" class="btn_3">
-                Bid
+          <button type="submit" onclick="location.href = '{% url 'userActions:addTocart' item_id=item.item_id %}'" value="submit" class="btn_3">
+                Add to Cart
             </button>
-            
-        </div>
-
-          </form>
-          {% endif %}
-          {% if can_claim %}
             <button type="submit" onclick="location.href = '{% url 'userActions:checkout' item_id=item.item_id %}'" value="submit" class="btn_3">
-                Claim
+                Buy Now
             </button>
-            {% endif %}
         </div>
       </div>
         </div></div>
