@@ -9,8 +9,7 @@ pip install Django==3.0.4
 
 ### Running the website locally
 ```bash
-cd ~/auction
-python manage.py makemigrations
-python manage.py migrate
+cd ~/Marketplace
+
 python manage.py runserver
 ```
