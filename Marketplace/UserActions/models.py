@@ -23,27 +23,30 @@ class Item(models.Model):
     item_description = models.CharField(max_length = 250, blank = True)
     image_url = models.FileField(upload_to='documents')
     pincode = models.ForeignKey(Pincodes,on_delete=models.CASCADE)
-    seller = models.ForeignKey(User,on_delete=models.CASCADE)
+    seller_id = models.ForeignKey(User,on_delete=models.CASCADE)
+    category = models.CharField(max_length = 100)
     def __str__(self):
         return "%s %s" % (self.item_name, self.highest_bid)
 
 
 class Cart(models.Model):
-    cart_id = models.ForeignKey(User,on_delete=models.CASCADE)
+    cart_id = models.ForeignKey(User,related_name='cart_id',on_delete=models.CASCADE)
     total_amount = models.FloatField()
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    
+    item = models.ForeignKey(Item,on_delete=models.CASCADE)
+    class Meta:
+        unique_together = ('cart_id', 'item')
+
 class UserAttribute(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     role = models.CharField(max_length = 250, blank = True)
     address = models.CharField(max_length = 250, blank = True)
     money =  models.FloatField( blank = True)
-    # cart = models.ForeignKey(Cart,on_delete=models.CASCADE)
+    
 
 
-# class Orders(models.Model):
-#     order_id = models.AutoField(primary_key=True)
-#     user_id = models.ForeignKey(User,on_delete=models.CASCADE)
-#     total_amount = models.FloatField()
-#     cust_resp = models.
-#     status = 
+class Orders(models.Model):
+    order_id = models.AutoField(primary_key=True)
+    user_id = models.ForeignKey(User,on_delete=models.CASCADE)
+    total_amount = models.FloatField(max_length = 250)
+    cust_resp = models.BooleanField()
+    status = models.CharField(max_length = 250)

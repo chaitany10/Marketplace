@@ -18,7 +18,7 @@ from django.db.models import Q
 def register_view(request):
     #  checking for authentication
     if request.user.is_authenticated:
-        return redirect('')
+        return redirect('UserActions:profile')
     else:
         #  Getting Form Info
         if request.method == "POST":
@@ -51,7 +51,7 @@ def register_view(request):
 def login_view(request):
     #  Authentication check. Users currently logged in cannot view this page.
     if request.user.is_authenticated:
-        return redirect('')
+        return redirect('UserActions:profile')
 
     #  Standard Login through Forms
     if request.method == "POST":
@@ -78,7 +78,7 @@ def login_view(request):
 @login_required
 def logout_view(request):
     auth.logout(request)
-    return HttpResponseRedirect('')
+    return HttpResponseRedirect('home')
 
 
 
@@ -86,7 +86,13 @@ def profile_view(request):
     if not request.user.is_authenticated:
         return redirect('UserActions:login')
     else:
-        return render(request, 'profile.html')
+        user = request.user
+        userattribute = UserAttribute.objects.get(user=user)
+        context = {
+            'userattribute' : userattribute
+        }
+
+        return render(request, 'profile.html',context)
 
 
 # def history_view(request):
