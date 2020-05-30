@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+  <!-- slider Area Start-->
+  <div class="slider-area ">
+    <!-- Mobile Menu -->
+    <div class="single-slider slider-height2 d-flex align-items-center" data-background="{% static 'assets/img/hero/category.jpg' %}">
+        <div class="container box_1170 border-top-generic">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="hero-cap text-center">
+                        <h2>Your Account</h2>
+                    </div>
+
+                </div>
+            </div>
+            <br><br>
+            
+            
+            <a class="btn_1" href="{%url 'userActions:history'%}">Your History</a>
+            <a class="btn_1" href="{%url 'userActions:sell'%}">Sell New Item</a>
+            <a class="btn_1" href="{%url 'userActions:biddedItems'%}">Bidded Items</a>
+            <a class="btn_1" href="{%url 'userActions:claimedItems' %}">Claimed Items</a>
+            
+        </div>
+        
+    </div>
+  </div>
+  <!-- slider Area End-->
+<br><br>
+  <!--================Cart Area =================-->
+  
+  <!--================End Cart Area =================-->
+{% endblock %}

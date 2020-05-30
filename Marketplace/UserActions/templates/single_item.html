@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <!-- slider Area Start-->
+    <div class="slider-area ">
+        <!-- Mobile Menu -->
+        <div class="single-slider slider-height2 d-flex align-items-center" data-background="assets/img/hero/category.jpg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="hero-cap text-center">
+                        {% if can_claim %}
+                          <h2>Claim it Today!</h2>
+                        {% elif item.upload_user == request.user%}
+                          <h2>Item Details</h2>
+                        {% elif claimed_item %}
+                      
+                            <h2>Thank you for Claiming this Product</h2>
+                        
+                        {% elif available %}
+                            <h2>Bid on this amazing product now!</h2>
+                        {% else%}
+                          <h2>You are currently the highest bidder</h2>
+                          <br>
+                          <h2>Wait for deadline to Claim</h2
+                        
+                        {% endif %}
+                        
+                        
+                        
+                            
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- slider Area End-->
+
+  <!--================Single Product Area =================-->
+  <section class ="confirmation_part">
+    {% for message in messages %}
+
+                    {% if success%}
+                    <div class="alert alert-success">
+                        <a class="close" href="#" data-dismiss="alert">×</a>
+
+                        {{ message }}
+
+                    </div>
+                    
+                    {% else %}
+                    <div class="alert alert-danger">
+                        <a class="close" href="#" data-dismiss="alert">×</a>
+
+                        {{ message }}
+
+                    </div>
+                    {% endif %}
+    {% endfor %}
+  <div class="container">
+    <div class="row align-items-center">
+        <div class="col-lg-6 col-md-6">
+            <div class="login_part_text text-center">
+                <div class="login_part_text_iner">
+                  <img src="{{item.image_url.url}}" alt="{{item.item_name}}"  width =400px>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-lx-4">
+        <div class="single_confirmation_details">
+          <h3>Item Details</h3>
+          <table class="table table-borderless">
+            
+            <tbody>
+              <tr>
+                <th colspan="2"><span>Item Name</span></th>
+                <th>{{item.item_name}}</th>
+                
+              </tr>
+              <tr>
+                <th colspan="2"><span>Item Description</span></th>
+                <th>{{item.item_description}}</th>
+                
+              </tr><tr>
+                <th colspan="2"><span>Starting Bid</span></th>
+                <th>{{item.starting_bid}}</th>
+                
+              </tr><tr>
+                <th colspan="2"><span>Highest Bid</span></th>
+                <th>{{item.highest_bid}}</th>
+                
+              </tr><tr>
+                <th colspan="2"><span>Contact</span></th>
+                <th>{{item.contact}}</th>
+                
+              </tr>
+              <tr>
+                <th colspan="2"><span>Deadline Date</span></th>
+                <th>{{item.deadline_date}}</th>
+              </tr>
+              {% if item.is_claimed %}
+              <tr>
+                <th colspan="2"><span>Claimed By</span></th>
+                <th>{{item.highest_bid_user}}</th>
+              </tr>
+              {% endif %}
+              
+          </table>
+          {% if can_bid %}
+          <form clasee= "row contact_form" action="" method="post" novalidate="novalidate" name ="bidform">
+            {% csrf_token %}
+            <!-- <div class="col-md-12 form-group p_star"> -->
+              <input type="text" class="form-control" id="new_bid" name="new_bid" value=""
+                  placeholder="New Bid">
+          <!-- </div> -->
+          <br>
+          <br>
+          <div class="login_part_text text-center"></div>
+                                    
+            <button type="submit" value="submit" class="btn_3">
+                Bid
+            </button>
+            
+        </div>
+
+          </form>
+          {% endif %}
+          {% if can_claim %}
+            <button type="submit" onclick="location.href = '{% url 'userActions:checkout' item_id=item.item_id %}'" value="submit" class="btn_3">
+                Claim
+            </button>
+            {% endif %}
+        </div>
+      </div>
+        </div></div>
+      </section>  
+  <!-- subscribe part end -->
+{% endblock %}
