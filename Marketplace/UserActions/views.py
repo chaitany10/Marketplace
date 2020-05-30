@@ -179,7 +179,10 @@ def single_item_view(request, item_id):
         return render(request, 'single_item.html', context)
 
 def cart(request):
-    
+    return
+
+def addToCart(request,item_id):
+    return
 # # View for checking the items that the user has bidded on and is currently the hhighest bidder
 # # Requests: GET
 
