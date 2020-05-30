@@ -80,7 +80,14 @@
               
               
           </table>
-          
+          {% if cart %}
+          <button type="submit" onclick="location.href = '{% url 'UserActions:addToCart' item_id=item.item_id %}'" value="submit" class="btn_3">
+                Add to Cart
+            </button>
+          {% endif %}
+            <button type="submit" onclick="location.href = '{% url 'UserActions:cart' %}'" value="submit" class="btn_3">
+                View Cart
+            </button>
         </div>
       </div>
         </div></div>

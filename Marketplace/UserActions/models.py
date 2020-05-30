@@ -11,9 +11,14 @@ STATUS =[
 ]
 
 # Create your models here.
-
+class Slottings(models.Model):
+    slot_id =models.AutoField(primary_key=True)
+    start_time = models.DateTimeField()
+    usage_count = models.IntegerField()
+     
 class Pincodes(models.Model):
     pincode = models.IntegerField()
+    
 
 #Item Model
 class Item(models.Model):
@@ -30,7 +35,7 @@ class Item(models.Model):
 
 
 class Cart(models.Model):
-    cart_id = models.ForeignKey(User,related_name='cart_id',on_delete=models.CASCADE)
+    cart_id = models.ForeignKey(User,on_delete=models.CASCADE)
     total_amount = models.FloatField()
     item = models.ForeignKey(Item,on_delete=models.CASCADE)
     class Meta:

@@ -8,7 +8,7 @@ from django.contrib import auth, messages
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from .models import UserAttribute,Item
+from .models import UserAttribute,Item,Cart
 from datetime import datetime, timedelta, timezone
 from itertools import chain
 from django.db.models import Q
@@ -78,7 +78,7 @@ def login_view(request):
 @login_required
 def logout_view(request):
     auth.logout(request)
-    return HttpResponseRedirect('home')
+    return HttpResponseRedirect(reverse('home'))
 
 
 
@@ -126,7 +126,7 @@ def profile_view(request):
 def item_list_view(request):
     # Check for Authentication
     if not request.user.is_authenticated:
-        return redirect('userActions:login')
+        return redirect('UserActions:login')
     else:
         # Getting all Items
         itemsList = Item.objects.all()
@@ -170,20 +170,65 @@ def single_item_view(request, item_id):
     # Check for Authentication
     if not request.user.is_authenticated:
 
-        return redirect('userActions:login')
+        return redirect('UserActions:login')
 
     else:
-        
-        
+        available = False
+        cart = Cart.objects.filter(cart_id = request.user,item_id = item_id).exists()
+        print(cart)
+        if(cart != False):
+            available = False
+            print(available)
+        else:
+            available = True
         item = Item.objects.get(item_id=item_id)  # Get specified Object
-        context={'item' : item}
+        
+        context={
+            'item' : item,
+            'cart' : available
+        }
         return render(request, 'single_item.html', context)
 
 def cart(request):
-    return
+    if not request.user.is_authenticated:
+        return redirect('UserActions:login')
+    else:
+        cart_items = Cart.objects.filter(cart_id = request.user)
+        total_amount = Cart.objects.filter(cart_id = request.user).last().total_amount
+        for item in cart_items:
+            print(item.item.item_name)
+        context={
+            'list' : cart_items,
+            'total_amount' : total_amount
+        }
+        return render(request, 'cart.html', context)
+
 
 def addToCart(request,item_id):
-    return
+    if not request.user.is_authenticated:
+        return redirect('UserActions:login')
+    else:
+        cart = Cart.objects.filter(cart_id = request.user).exists()
+
+        if cart == False:
+            item = Item.objects.get(item_id = item_id)
+            cart = Cart()
+            cart.cart_id = request.user
+            cart.item = item
+            cart.total_amount = item.item_price
+            cart.save()
+            cart = False
+        else:
+            last_cart = Cart.objects.filter(cart_id = request.user).last()
+            cart=Cart()
+            item = Item.objects.get(item_id = item_id)
+            cart.cart_id = request.user
+            cart.item = item
+            cart.total_amount = last_cart.total_amount + item.item_price
+            cart.save()
+            cart = False
+            
+        return HttpResponseRedirect('/item/'+str(item.item_id))
 # # View for checking the items that the user has bidded on and is currently the hhighest bidder
 # # Requests: GET
 
@@ -192,18 +237,11 @@ def addToCart(request,item_id):
 # # Requests: GET and POST for saving new info
 
 
-# def checked_out(request, item_id):
-#     if not request.user.is_authenticated:
-#         return redirect('userActions:login')
-#     else:
-#         context = {}
-#         item = Item.objects.get(item_id=item_id)
-#         if(time_difference(item.deadline_date) < 0):  # Check whether deadline has crossed
-#             context['item'] = item
-#             save_to_claimed_item(item)
-#             item.delete()
-#             context['item'] = item
-#             context['claimed_item'] = True
-#             return render(request, 'single_item.html', context)
-#         else:
-#             return redirect('userActions:profile')
+def checked_out(request):
+    if not request.user.is_authenticated:
+        return redirect('UserActions:login')
+    else:
+        context = {}
+        cart_items = Cart.objects.filter(cart_id = request.user)
+        total_amount = Cart.objects.filter(cart_id = request.user).last().total_amount
+        order = 
