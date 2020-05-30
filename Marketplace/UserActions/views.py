@@ -178,8 +178,16 @@ def single_item_view(request, item_id):
         context={'item' : item}
         return render(request, 'single_item.html', context)
 
+<<<<<<< HEAD
 # def cart(request):
     
+=======
+def cart(request):
+    return
+
+def addToCart(request,item_id):
+    return
+>>>>>>> ea22f9ed48f6eb170d8a52b0eed2681604c5f404
 # # View for checking the items that the user has bidded on and is currently the hhighest bidder
 # # Requests: GET
 
