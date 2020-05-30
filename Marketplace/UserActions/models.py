@@ -41,9 +41,9 @@ class UserAttribute(models.Model):
     # cart = models.ForeignKey(Cart,on_delete=models.CASCADE)
 
 
-class Orders(models.Model):
-    order_id = models.AutoField(primary_key=True)
-    user_id = models.ForeignKey(User,on_delete=models.CASCADE)
-    total_amount = models.FloatField()
-    cust_resp = models.
-    status = 
+# class Orders(models.Model):
+#     order_id = models.AutoField(primary_key=True)
+#     user_id = models.ForeignKey(User,on_delete=models.CASCADE)
+#     total_amount = models.FloatField()
+#     cust_resp = models.
+#     status = 

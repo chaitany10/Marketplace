@@ -11,5 +11,9 @@ app_name = 'UserActions'
 urlpatterns =[
      path('login/', views.login_view, name='login'),
      path('register/',views.register_view, name='register'),
-     path('logout/',views.logout_view,name="logout")
+     path('logout/',views.logout_view,name="logout"),
+     path('profile/',views.profile_view, name='profile'),
+     # path('itemList/',views.item_list_view, name = 'itemList'),
+     # path('item/<int:item_id>',views.single_item_view, name = 'singleItem'),
+     # path('search/',views.search, name='search'),
 ]
